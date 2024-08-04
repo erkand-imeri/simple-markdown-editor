@@ -8,12 +8,12 @@ export const useMarkdown = (isLiveUpdate: boolean) => {
   const [onMarkdownText, setOnMarkdownText] = useState<string>("");
 
   const loadMarkdownFromLocalStorage = useCallback(() => {
-    const savedMarkdown = localStorage.getItem(MARKDOWN_STORAGE_KEY);
-    if (savedMarkdown) {
+    const savedMarkdownText = localStorage.getItem(MARKDOWN_STORAGE_KEY);
+    if (savedMarkdownText) {
       if (textAreaRef.current) {
-        textAreaRef.current.value = savedMarkdown;
+        textAreaRef.current.value = savedMarkdownText;
       }
-      setOnMarkdownText(savedMarkdown);
+      setOnMarkdownText(savedMarkdownText);
     }
   }, []);
 
