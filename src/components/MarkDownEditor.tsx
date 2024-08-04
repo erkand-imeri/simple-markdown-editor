@@ -1,31 +1,28 @@
 "use client";
 
 import React, { useState } from "react";
+import MarkdownPreview from "./MarkdownPreview";
+import { useMarkdown } from "../hooks/useMarkdown";
 
 const MarkdownEditor: React.FC = () => {
-  const [markdown, setMarkdown] = useState<string>("");
-  const [isLiveUpdate, setIsLiveUpdate] = useState<boolean>(true);
-  const [renderedMarkdown, setRenderedMarkdown] = useState<string>("");
+  const [isLiveUpdate, setIsLiveUpdate] = useState<boolean>(false);
 
-  const handleButtonClick = () => {
-    setRenderedMarkdown(markdown);
-  };
+  const { markdownText, handleMarkdownChange, handleButtonClick, textAreaRef } =
+    useMarkdown(isLiveUpdate);
 
   return (
     <div className="flex flex-col h-screen w-screen p-4 bg-gray-200">
       <div className="flex flex-grow p-4">
         <textarea
           id="markdown-input"
+          ref={textAreaRef}
           className="w-1/2 p-4 m-4 border-r border-gray-400"
           placeholder="Enter your Markdown here..."
-          value={markdown}
-          onChange={(e) => setMarkdown(e.target.value)}
+          onChange={handleMarkdownChange}
         />
-        <textarea
-          id="markdown-output"
-          className="w-1/2 p-4 m-4 bg-white border-gray-400"
-          value={isLiveUpdate ? markdown : renderedMarkdown}
-          readOnly
+        <MarkdownPreview
+          className="w-1/2 p-4 m-4 bg-white border-gray-400 overflow-auto"
+          markdown={markdownText}
         />
       </div>
       <div className="p-4 flex items-center justify-end">
@@ -34,6 +31,7 @@ const MarkdownEditor: React.FC = () => {
             type="checkbox"
             checked={isLiveUpdate}
             onChange={(e) => setIsLiveUpdate(e.target.checked)}
+            className="form-checkbox h-5 w-5 text-green-600"
           />
           <span>Live Update</span>
         </label>
